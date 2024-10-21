@@ -27,16 +27,60 @@ This demonstrates the cconnection of MySQL database and Node.js to create a simp
 
    
    // Question 1 goes here
-
+// Question 1: Retrieve all patients
+app.get('/patients', (req, res) => {
+  const query = 'SELECT patient_id, first_name, last_name, date_of_birth FROM patients';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving patients:', err);
+      res.status(500).send('Server error');
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // Question 2 goes here
-
+// Question 2: Retrieve all providers
+app.get('/providers', (req, res) => {
+  const query = 'SELECT first_name, last_name, provider_specialty FROM providers';
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error retrieving providers:', err);
+      res.status(500).send('Server error');
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // Question 3 goes here
-
+// Question 3: Filter patients by First Name
+app.get('/patients/:first_name', (req, res) => {
+  const query = 'SELECT * FROM patients WHERE first_name = ?';
+  db.query(query, [req.params.first_name], (err, results) => {
+    if (err) {
+      console.error('Error retrieving patients by first name:', err);
+      res.status(500).send('Server error');
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // Question 4 goes here
-
+// Question 4: Retrieve all providers by their specialty
+app.get('/providers/specialty/:provider_specialty', (req, res) => {
+  const query = 'SELECT * FROM providers WHERE provider_specialty = ?';
+  db.query(query, [req.params.provider_specialty], (err, results) => {
+    if (err) {
+      console.error('Error retrieving providers by specialty:', err);
+      res.status(500).send('Server error');
+    } else {
+      res.json(results);
+    }
+  });
+});
    
 
    // listen to the server
